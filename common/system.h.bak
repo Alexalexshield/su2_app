@@ -1,0 +1,130 @@
+
+#define SU2_BOARD
+
+#ifdef MU_APP
+//#define PROCESSOR_MIPS 40 
+//#define PROCESSOR_MIPS 8 
+#define PROCESSOR_MIPS 16
+//#define PROCESSOR_MIPS 4
+#else
+//#define PROCESSOR_MIPS 40 
+//#define PROCESSOR_MIPS 8 
+#define PROCESSOR_MIPS 16
+//#define PROCESSOR_MIPS 4
+#endif
+
+#define SYSCLK (PROCESSOR_MIPS * 2000000ul)
+#define FCY (SYSCLK/2)
+
+#define GetSystemClock()		(SYSCLK)      
+#define GetInstructionClock()	(GetSystemClock()/2)
+#define GetPeripheralClock()	GetInstructionClock()
+#define CLOCK_FREQ 		(SYSCLK)
+
+
+
+#ifndef max
+#define max(a,b)            (((a) > (b)) ? (a) : (b))
+#endif
+#ifndef min
+#define min(a,b)            (((a) < (b)) ? (a) : (b))
+#endif
+
+#ifndef FALSE
+#define FALSE   0
+#endif
+
+#ifndef TRUE
+#define TRUE    1
+#endif
+
+#ifndef NULL
+#define NULL    0
+#endif
+
+
+#define int8    char
+#define int16   short
+#define int32   long
+#define int64   long long
+#define U8 unsigned char
+#define U16 unsigned short
+#define U32 unsigned long
+
+#define INPUT   1
+#define OUTPUT  0
+
+#include <p24fxxxx.h>
+
+#define ROM					const
+#define memcmppgm2ram(a,b,c)	memcmp(a,b,c)
+#define memcpypgm2ram(a,b,c)	memcpy(a,b,c)
+#define strcpypgm2ram(a, b)		strcpy(a,b)
+#define Reset()					asm("reset")
+#define SLEEP()					Sleep()
+#define CLRWDT()				ClrWdt()
+#define NOP()					Nop()
+#define DISABLE_WDT()			(RCONbits.SWDTEN = 0)
+#define ENABLE_WDT()			(RCONbits.SWDTEN = 1)
+	
+
+#ifdef SU_APP
+#define SOURCE_PREFIX "SU"
+#define MICRO_ID_STR "SU2"
+#define SW_VERSION_STR "0.20"
+#define MICRO_ID_1 'S'
+#define MICRO_ID_2 'U'
+#define MICRO_ID_3 '2'
+#endif
+
+#ifdef SU_TX
+#define SOURCE_PREFIX "TX"
+#define MICRO_ID_STR "SU2_TX"
+#define SW_VERSION_STR "0.20"
+#define MICRO_ID_1 'S'
+#define MICRO_ID_2 'U'
+#define MICRO_ID_3 'T'
+#endif
+
+#ifdef SU_RX
+#define SOURCE_PREFIX "RX"
+#define MICRO_ID_STR "SU2_RX"
+#define SW_VERSION_STR "0.20"
+#define MICRO_ID_1 'S'
+#define MICRO_ID_2 'U'
+#define MICRO_ID_3 'R'
+#endif
+
+#ifdef MU_APP
+#define SOURCE_PREFIX "MU"
+#define MICRO_ID_STR "MU2"
+#define SW_VERSION_STR "0.20"
+#define MICRO_ID_1 'M'
+#define MICRO_ID_2 'U'
+#define MICRO_ID_3 '2'
+#endif
+
+// OFFSET IN FLASH (OR EEPROM) MEMORY FOR SAVING CONFIG OR SETTINGS STRUCTURES
+#define CONFIG_EEPROM_OFFSET 4
+#define SETTINGS_EEPROM_OFFSET 32
+
+
+#include "su_struct.h"
+#include "iomapping.h"
+#include "GenericTypeDefs.h"
+#include "csv_packet.h"
+#include "delays.h"
+#include "timer.h"
+#include "port.h"
+#include "config.h"
+#ifndef MU_APP
+#include "adc.h"
+#endif
+
+extern volatile UnitFlags g_UnitFlags;
+extern volatile SystemError g_SysError;
+
+
+/*****************************************************************************
+ * EOF
+ *****************************************************************************/
